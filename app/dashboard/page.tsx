@@ -45,9 +45,11 @@ export default async function DashboardPage() {
                 background: 'white',
               }}
             >
-              <h2 style={{ margin: 0 }}>{house.name}</h2>
+              <h2 style={{ margin: 0 }}>
+                <Link href={`/houses/${house.id}`}>{house.name}</Link>
+              </h2>
               <p style={{ color: '#555', marginTop: 8 }}>
-                {[house.address_line1, house.city].filter(Boolean).join(', ') || 'Osoitetta ei annettu'}
+                {[house.address_line1, house.postal_code, house.city].filter(Boolean).join(', ') || 'Osoitetta ei annettu'}
               </p>
               <div style={{ marginTop: 12, fontSize: 14, color: '#666' }}>
                 {house.building_year ? <p>Rakennusvuosi: {house.building_year}</p> : null}

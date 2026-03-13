@@ -4,6 +4,7 @@ export type HouseListItem = {
   id: string
   name: string
   address_line1: string | null
+  postal_code: string | null
   city: string | null
   building_year: number | null
   building_type: string | null
@@ -28,6 +29,7 @@ export async function getUserHouses(): Promise<HouseListItem[]> {
         id,
         name,
         address_line1,
+        postal_code,
         city,
         building_year,
         building_type,
