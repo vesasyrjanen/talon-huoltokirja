@@ -37,9 +37,10 @@ export default async function SystemDetailPage({ params }: PageProps) {
         Päivitä järjestelmän tiedot, huoltoväli ja hätätilamerkintä.
       </p>
 
-      <p style={{ marginTop: 12 }}>
+      <div style={{ marginTop: 12, display: 'flex', gap: 16, flexWrap: 'wrap' }}>
         <Link href={`/houses/${houseId}/systems/${systemId}/documents`}>Avaa dokumentit</Link>
-      </p>
+        <Link href={`/qr/system/${systemId}`}>Avaa QR-koodi</Link>
+      </div>
 
       <SystemForm action={action} defaults={item} submitLabel="Tallenna muutokset" />
 
