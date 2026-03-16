@@ -61,7 +61,7 @@ export async function getSignedDocumentUrl(
 ) {
   const supabase = await createClient();
 
-  const bucket = maybePath ? bucketOrPath : "HOUSE-DOCUMENTS";
+  const bucket = maybePath ? bucketOrPath : "house-documents";
   const storagePath = maybePath ?? bucketOrPath;
 
   const { data, error } = await supabase.storage

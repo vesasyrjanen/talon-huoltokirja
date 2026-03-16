@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { requireHouseMember } from '@/lib/auth/require-house-member'
 import { getSystemDocuments, getSignedDocumentUrl } from '@/lib/db/documents'
-import { uploadHouseDocumentAction } from '@/actions/documents'
+import { uploadSystemDocumentAction } from '@/actions/documents'
 import { DocumentUploadForm } from '@/components/documents/document-upload-form'
 import { DocumentList } from '@/components/documents/document-list'
 
@@ -22,7 +22,7 @@ export default async function SystemDocumentsPage({ params }: PageProps) {
   )
   const signedUrls = Object.fromEntries(signedEntries)
 
-  const action = uploadHouseDocumentAction.bind(null, houseId, systemId)
+  const action = uploadSystemDocumentAction.bind(null, houseId, systemId)
 
   return (
     <main style={{ maxWidth: 860, margin: '60px auto', padding: '0 16px' }}>

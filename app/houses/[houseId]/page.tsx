@@ -1,42 +1,88 @@
 import Link from 'next/link'
 import { requireHouseMember } from '@/lib/auth/require-house-member'
 import { getHouseById, getHouseSystems } from '@/lib/db/systems'
+import { SystemList } from '@/components/systems/system-list'
 
 type PageProps = {
   params: Promise<{ houseId: string }>
 }
 
-export default async function HouseDetailPage({ params }: PageProps) {
+export default async function HousePage({ params }: PageProps) {
   const { houseId } = await params
+
   await requireHouseMember(houseId)
 
-  const [house, systems] = await Promise.all([
-    getHouseById(houseId),
-    getHouseSystems(houseId),
-  ])
+  const house = await getHouseById(houseId)
+  const systems = await getHouseSystems(houseId)
 
   return (
-    <main style={{ maxWidth: 960, margin: '60px auto', padding: '0 16px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'end', gap: 16 }}>
-        <div>
-          <h1>{house?.name ?? 'Talo'}</h1>
-          <p style={{ color: '#555' }}>
-            {[house?.address_line1, house?.postal_code, house?.city].filter(Boolean).join(', ')}
-          </p>
-        </div>
-        <div style={{ display: 'flex', gap: 16 }}>
-          <Link href={`/houses/${houseId}/systems`}>Järjestelmät</Link>
-          <Link href={`/houses/${houseId}/documents`}>Dokumentit</Link>
-          <Link href="/dashboard">Dashboard</Link>
-        </div>
+    <main style={{ maxWidth: 900, margin: '60px auto', padding: '0 16px' }}>
+      <p>
+        <Link href="/dashboard">← Takaisin dashboardiin</Link>
+      </p>
+
+      <h1>{house?.name}</h1>
+
+      <div
+        style={{
+          display: 'flex',
+          gap: 16,
+          marginTop: 24,
+          marginBottom: 32,
+          flexWrap: 'wrap',
+        }}
+      >
+        <Link
+          href={`/houses/${houseId}/systems`}
+          style={{
+            padding: '10px 16px',
+            borderRadius: 8,
+            border: '1px solid #ccc',
+            textDecoration: 'none',
+          }}
+        >
+          Järjestelmät
+        </Link>
+
+        <Link
+          href={`/houses/${houseId}/items`}
+          style={{
+            padding: '10px 16px',
+            borderRadius: 8,
+            border: '1px solid #ccc',
+            textDecoration: 'none',
+          }}
+        >
+          Irtaimisto
+        </Link>
+
+        <Link
+          href={`/houses/${houseId}/documents`}
+          style={{
+            padding: '10px 16px',
+            borderRadius: 8,
+            border: '1px solid #ccc',
+            textDecoration: 'none',
+          }}
+        >
+          Dokumentit
+        </Link>
       </div>
 
-      <section style={{ marginTop: 32 }}>
-        <h2>Yhteenveto</h2>
-        <p>Tässä talossa on {systems.length} aktiivista järjestelmää tai huoltokohdetta.</p>
-        <p style={{ display: 'flex', gap: 16 }}>
-          <Link href={`/houses/${houseId}/systems/new`}>Lisää järjestelmä</Link>
-          <Link href={`/houses/${houseId}/documents`}>Avaa dokumentit</Link>
+      <section>
+        <h2>Järjestelmät</h2>
+        <p style={{ color: '#555' }}>
+          Talon tekniset järjestelmät ja niiden huoltohistoria.
+        </p>
+
+        <div style={{ marginTop: 16 }}>
+          <SystemList houseId={houseId} items={systems} />
+        </div>
+
+        <p style={{ marginTop: 16 }}>
+          <Link href={`/houses/${houseId}/systems/new`}>
+            Lisää uusi järjestelmä
+          </Link>
         </p>
       </section>
     </main>
