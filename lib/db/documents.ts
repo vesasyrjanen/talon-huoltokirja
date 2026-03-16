@@ -1,85 +1,76 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from "@/lib/supabase/server";
 
-export type DocumentItem = {
-  id: string
-  house_id: string
-  linked_system_id: string | null
-  title: string
-  category: string
-  description: string | null
-  file_name: string
-  storage_bucket: string
-  storage_path: string
-  mime_type: string | null
-  file_size_bytes: number | null
-  uploaded_at: string
-}
-
-export async function getHouseDocuments(houseId: string): Promise<DocumentItem[]> {
-  const supabase = await createClient()
+export async function getHouseDocuments(houseId: string) {
+  const supabase = await createClient();
 
   const { data, error } = await supabase
-    .from('documents')
-    .select(`
-      id,
-      house_id,
-      linked_system_id,
-      title,
-      category,
-      description,
-      file_name,
-      storage_bucket,
-      storage_path,
-      mime_type,
-      file_size_bytes,
-      uploaded_at
-    `)
-    .eq('house_id', houseId)
-    .is('deleted_at', null)
-    .order('uploaded_at', { ascending: false })
+    .from("documents")
+    .select("*")
+    .eq("house_id", houseId)
+    .is("system_id", null)
+    .is("item_id", null)
+    .order("created_at", { ascending: false });
 
-  if (error) throw error
-  return (data ?? []) as DocumentItem[]
+  if (error) {
+    console.error("getHouseDocuments error", error);
+    throw new Error("Dokumenttien haku epäonnistui.");
+  }
+
+  return data ?? [];
 }
 
-export async function getSystemDocuments(
-  houseId: string,
-  systemId: string
-): Promise<DocumentItem[]> {
-  const supabase = await createClient()
+export async function getSystemDocuments(houseId: string, systemId: string) {
+  const supabase = await createClient();
 
   const { data, error } = await supabase
-    .from('documents')
-    .select(`
-      id,
-      house_id,
-      linked_system_id,
-      title,
-      category,
-      description,
-      file_name,
-      storage_bucket,
-      storage_path,
-      mime_type,
-      file_size_bytes,
-      uploaded_at
-    `)
-    .eq('house_id', houseId)
-    .eq('linked_system_id', systemId)
-    .is('deleted_at', null)
-    .order('uploaded_at', { ascending: false })
+    .from("documents")
+    .select("*")
+    .eq("house_id", houseId)
+    .eq("system_id", systemId)
+    .order("created_at", { ascending: false });
 
-  if (error) throw error
-  return (data ?? []) as DocumentItem[]
+  if (error) {
+    console.error("getSystemDocuments error", error);
+    throw new Error("Järjestelmän dokumenttien haku epäonnistui.");
+  }
+
+  return data ?? [];
 }
 
-export async function getSignedDocumentUrl(bucket: string, path: string) {
-  const supabase = await createClient()
+export async function getItemDocuments(houseId: string, itemId: string) {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("documents")
+    .select("*")
+    .eq("house_id", houseId)
+    .eq("item_id", itemId)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("getItemDocuments error", error);
+    throw new Error("Irtaimiston dokumenttien haku epäonnistui.");
+  }
+
+  return data ?? [];
+}
+
+export async function getSignedDocumentUrl(
+  bucketOrPath: string,
+  maybePath?: string
+) {
+  const supabase = await createClient();
+
+  const bucket = maybePath ? bucketOrPath : "HOUSE-DOCUMENTS";
+  const storagePath = maybePath ?? bucketOrPath;
 
   const { data, error } = await supabase.storage
     .from(bucket)
-    .createSignedUrl(path, 60 * 10)
+    .createSignedUrl(storagePath, 60 * 10);
 
-  if (error) throw error
-  return data?.signedUrl ?? null
+  if (error || !data?.signedUrl) {
+    return null;
+  }
+
+  return data.signedUrl;
 }

@@ -29,12 +29,19 @@ export default async function ItemDetailPage({
             Muokkaa irtaimiston tietoja.
           </p>
 
-          <div className="mt-4">
+          <div className="mt-4 flex flex-wrap gap-3">
             <Link
               href={`/qr/item/${item.id}`}
               className="rounded-lg border px-4 py-2 text-sm"
             >
               Avaa QR-koodi
+            </Link>
+
+            <Link
+              href={`/houses/${houseId}/items/${item.id}/documents`}
+              className="rounded-lg border px-4 py-2 text-sm"
+            >
+              Avaa dokumentit
             </Link>
           </div>
         </div>

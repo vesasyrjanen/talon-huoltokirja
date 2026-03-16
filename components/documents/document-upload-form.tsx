@@ -1,68 +1,79 @@
-'use client'
+"use client";
 
-import { useActionState } from 'react'
-import type { DocumentActionState } from '@/actions/documents'
+import { useRef, useState, useTransition } from "react";
+import { uploadDocument } from "@/actions/documents";
+
+type DocumentUploadFormProps = {
+  action?: (formData: FormData) => Promise<{ error?: string; success?: string } | void>;
+  houseId?: string;
+  systemId?: string;
+  itemId?: string;
+};
 
 export function DocumentUploadForm({
   action,
-}: {
-  action: (state: DocumentActionState, formData: FormData) => Promise<DocumentActionState>
-}) {
-  const [state, formAction, pending] = useActionState(action, {})
+  houseId,
+  systemId,
+  itemId,
+}: DocumentUploadFormProps) {
+  const formRef = useRef<HTMLFormElement>(null);
+  const [message, setMessage] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
 
   return (
-    <form action={formAction} style={{ display: 'grid', gap: 16, marginTop: 24 }}>
-      <label>
-        <div>Nimi</div>
-        <input name="title" required style={inputStyle} />
-      </label>
+    <form
+      ref={formRef}
+      className="space-y-4 rounded-2xl border bg-white p-6 shadow-sm"
+      action={(formData) => {
+        startTransition(async () => {
+          if (houseId) formData.set("houseId", houseId);
+          if (systemId) formData.set("systemId", systemId);
+          if (itemId) formData.set("itemId", itemId);
 
-      <label>
-        <div>Kategoria</div>
-        <select name="category" defaultValue="manual" style={inputStyle}>
-          <option value="manual">Käyttöohje</option>
-          <option value="drawing">Piirustus</option>
-          <option value="report">Raportti</option>
-          <option value="photo">Valokuva</option>
-          <option value="receipt">Kuitti</option>
-          <option value="other">Muu</option>
-        </select>
-      </label>
+          const result = action
+            ? await action(formData)
+            : await uploadDocument(formData);
 
-      <label>
-        <div>Kuvaus</div>
-        <textarea name="description" rows={4} style={inputStyle} />
-      </label>
+          if (result && "error" in result && result.error) {
+            setMessage(result.error);
+            return;
+          }
 
-      <label>
-        <div>Tiedosto</div>
-        <input name="file" type="file" required style={inputStyle} />
-      </label>
+          if (result && "success" in result && result.success) {
+            setMessage(result.success);
+          } else {
+            setMessage("Dokumentti ladattu.");
+          }
 
-      {state.error ? <p style={{ color: 'crimson' }}>{state.error}</p> : null}
-      {state.success ? <p style={{ color: 'green' }}>{state.success}</p> : null}
+          formRef.current?.reset();
+        });
+      }}
+    >
+      {houseId ? <input type="hidden" name="houseId" value={houseId} /> : null}
+      {systemId ? <input type="hidden" name="systemId" value={systemId} /> : null}
+      {itemId ? <input type="hidden" name="itemId" value={itemId} /> : null}
 
-      <button type="submit" disabled={pending} style={buttonStyle}>
-        {pending ? 'Ladataan...' : 'Lataa dokumentti'}
+      <div>
+        <label className="mb-1 block text-sm font-medium">Valitse tiedosto</label>
+        <input
+          type="file"
+          name="file"
+          required
+          className="w-full rounded-lg border px-3 py-2"
+        />
+      </div>
+
+      {message ? (
+        <p className="text-sm text-neutral-600">{message}</p>
+      ) : null}
+
+      <button
+        type="submit"
+        disabled={isPending}
+        className="rounded-lg bg-black px-4 py-2 text-white"
+      >
+        {isPending ? "Ladataan..." : "Lataa dokumentti"}
       </button>
     </form>
-  )
-}
-
-const inputStyle: React.CSSProperties = {
-  width: '100%',
-  padding: '12px',
-  marginTop: '6px',
-  border: '1px solid #ccc',
-  borderRadius: '8px',
-}
-
-const buttonStyle: React.CSSProperties = {
-  width: 'fit-content',
-  padding: '12px 16px',
-  border: 'none',
-  borderRadius: '10px',
-  background: '#0f172a',
-  color: 'white',
-  cursor: 'pointer',
+  );
 }

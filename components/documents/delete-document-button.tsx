@@ -1,43 +1,26 @@
-'use client'
+"use client";
 
-import { useTransition } from 'react'
-import { deleteDocumentAction } from '@/actions/documents'
+import { useTransition } from "react";
+import { deleteDocument } from "@/actions/documents";
 
-export function DeleteDocumentButton({
-  houseId,
-  documentId,
-  bucket,
-  storagePath,
-  linkedSystemId,
-}: {
-  houseId: string
-  documentId: string
-  bucket: string
-  storagePath: string
-  linkedSystemId?: string | null
-}) {
-  const [pending, startTransition] = useTransition()
+export function DeleteDocumentButton({ documentId }: { documentId: string }) {
+  const [isPending, startTransition] = useTransition();
 
   return (
     <button
       type="button"
-      disabled={pending}
+      disabled={isPending}
+      className="rounded-lg border px-3 py-2 text-sm"
       onClick={() => {
-        if (!window.confirm('Poistetaanko dokumentti?')) return
+        const ok = window.confirm("Haluatko varmasti poistaa dokumentin?");
+        if (!ok) return;
+
         startTransition(async () => {
-          await deleteDocumentAction(houseId, documentId, bucket, storagePath, linkedSystemId)
-        })
-      }}
-      style={{
-        padding: '8px 12px',
-        borderRadius: 10,
-        border: '1px solid #ef4444',
-        background: '#fff5f5',
-        color: '#b91c1c',
-        cursor: 'pointer',
+          await deleteDocument(documentId);
+        });
       }}
     >
-      {pending ? 'Poistetaan...' : 'Poista'}
+      {isPending ? "Poistetaan..." : "Poista"}
     </button>
-  )
+  );
 }

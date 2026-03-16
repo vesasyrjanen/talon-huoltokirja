@@ -1,29 +1,21 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient } from "@/lib/supabase/server";
 
 export type HouseListItem = {
-  id: string
-  name: string
-  address_line1: string | null
-  postal_code: string | null
-  city: string | null
-  building_year: number | null
-  building_type: string | null
-  area_m2: number | null
-}
+  id: string;
+  name: string;
+  address_line1: string | null;
+  postal_code: string | null;
+  city: string | null;
+  building_year: number | null;
+  building_type: string | null;
+  area_m2: number | null;
+};
 
-export async function getUserHouses(): Promise<HouseListItem[]> {
-  const supabase = await createClient()
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    return []
-  }
+export async function getUserHouses(userId: string): Promise<HouseListItem[]> {
+  const supabase = await createClient();
 
   const { data, error } = await supabase
-    .from('house_members')
+    .from("house_members")
     .select(`
       house:houses (
         id,
@@ -36,15 +28,17 @@ export async function getUserHouses(): Promise<HouseListItem[]> {
         area_m2
       )
     `)
-    .eq('user_id', user.id)
-    .eq('invitation_status', 'active')
-    .is('removed_at', null)
+    .eq("user_id", userId);
 
   if (error) {
-    throw error
+    console.error("getUserHouses error", error);
+    throw new Error("Talojen haku epäonnistui.");
   }
 
-  return (data ?? [])
-    .map((row) => row.house)
-    .filter(Boolean) as HouseListItem[]
+  const houses = (data ?? [])
+    .map((row: any) => row.house)
+    .flat()
+    .filter(Boolean) as HouseListItem[];
+
+  return houses;
 }
