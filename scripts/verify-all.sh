@@ -1,7 +1,19 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
 PORT=4010
+SERVER_PID=""
+
+cleanup() {
+  if [ -n "${SERVER_PID:-}" ] && kill -0 "$SERVER_PID" 2>/dev/null; then
+    echo
+    echo "Stopping server..."
+    kill "$SERVER_PID" 2>/dev/null || true
+    wait "$SERVER_PID" 2>/dev/null || true
+  fi
+}
+
+trap cleanup EXIT
 
 echo
 echo "==> Build"
@@ -23,22 +35,7 @@ SYSTEM_ID=${SYSTEM_ID:-""} \
 ITEM_ID=${ITEM_ID:-""} \
 node scripts/route-smoke.mjs
 
-RESULT=$?
-
 echo
-echo "Stopping server..."
-kill $SERVER_PID
-
-if [ $RESULT -eq 0 ]; then
-  echo
-  echo "=============================="
-  echo "SMOKE TEST PASSED"
-  echo "=============================="
-else
-  echo
-  echo "=============================="
-  echo "SMOKE TEST FAILED"
-  echo "=============================="
-fi
-
-exit $RESULT
+echo "=============================="
+echo "SMOKE TEST PASSED"
+echo "=============================="
