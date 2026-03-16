@@ -6,12 +6,9 @@ export function HouseCard({
   house: { id: string; name: string };
 }) {
   return (
-    <Link
-      href={`/houses/${house.id}`}
-      className="block rounded-2xl border bg-white p-5 shadow-sm transition hover:shadow-md"
-    >
-      <h3 className="text-lg font-semibold">{house.name}</h3>
-      <div className="mt-4 text-sm font-medium text-neutral-800">
+    <Link href={`/houses/${house.id}`} className="ui-link-card">
+      <h3 style={{ margin: 0, fontSize: 20 }}>{house.name}</h3>
+      <div className="ui-meta" style={{ marginTop: 12 }}>
         Avaa talo →
       </div>
     </Link>

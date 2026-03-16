@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { requireHouseMember } from "@/lib/auth/require-house-member";
 import { buildDocumentPath } from "@/lib/storage/document-path";
+import { DOCUMENTS_BUCKET } from "@/lib/config/storage";
 
 export async function uploadDocument(formData: FormData) {
   const houseId = String(formData.get("houseId") ?? "");
@@ -64,7 +65,7 @@ export async function uploadDocument(formData: FormData) {
   });
 
   const { error: uploadError } = await supabase.storage
-    .from("house-documents")
+    .from(DOCUMENTS_BUCKET)
     .upload(storagePath, file, {
       upsert: false,
       contentType: file.type || undefined,
@@ -90,7 +91,7 @@ export async function uploadDocument(formData: FormData) {
 
   if (insertError) {
     console.error("uploadDocument insertError", insertError);
-    await supabase.storage.from("house-documents").remove([storagePath]);
+    await supabase.storage.from(DOCUMENTS_BUCKET).remove([storagePath]);
     return { error: "Dokumentin tietojen tallennus epäonnistui." };
   }
 
@@ -136,7 +137,7 @@ export async function deleteDocument(documentId: string) {
     return { error: "Dokumentin poisto epäonnistui." };
   }
 
-  await supabase.storage.from("house-documents").remove([document.storage_path]);
+  await supabase.storage.from(DOCUMENTS_BUCKET).remove([document.storage_path]);
 
   revalidatePath(`/houses/${document.house_id}`);
   revalidatePath(`/houses/${document.house_id}/documents`);

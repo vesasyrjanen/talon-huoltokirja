@@ -2,6 +2,10 @@ import { syncUserProfile } from "@/lib/auth/sync-user-profile";
 import { requireUser } from "@/lib/auth/require-user";
 import { getDashboardData } from "@/lib/db/dashboard";
 
+import { Layout } from "@/components/layout/layout";
+import { Card } from "@/components/ui/card";
+import { ButtonLink } from "@/components/ui/button-link";
+
 import { QuickActions } from "@/components/dashboard/quick-actions";
 import { HouseCard } from "@/components/dashboard/house-card";
 import { OverdueMaintenanceCard } from "@/components/dashboard/overdue-maintenance-card";
@@ -16,46 +20,56 @@ export default async function DashboardPage() {
     await getDashboardData();
 
   return (
-    <div className="space-y-8">
-      <section>
-        <h1 className="text-3xl font-semibold">Dashboard</h1>
-        <p className="mt-2 text-neutral-600">
-          Yhteenveto taloista, huolloista ja dokumenteista.
-        </p>
-      </section>
+    <Layout>
+      <div className="page-stack">
+        <section>
+          <h1 className="page-title">Dashboard</h1>
+          <p className="page-lead">
+            Yhteenveto taloista, huolloista ja dokumenteista.
+          </p>
+        </section>
 
-      <QuickActions />
+        <QuickActions />
 
-      <section className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-semibold">Talot</h2>
-          <span className="text-sm text-neutral-500">{houses.length} kpl</span>
-        </div>
-
-        {houses.length === 0 ? (
-          <div className="rounded-2xl border bg-white p-6 shadow-sm">
-            <h3 className="text-lg font-medium">Ei taloja vielä</h3>
-            <p className="mt-2 text-sm text-neutral-600">
-              Lisää ensimmäinen talo, niin saat huoltokirjan käyttöön.
-            </p>
+        <section className="page-stack">
+          <div style={{ display: "flex", justifyContent: "space-between", gap: 16, alignItems: "end", flexWrap: "wrap" }}>
+            <div>
+              <h2 className="section-title">Talot</h2>
+              <p className="section-lead">Kaikki hallinnoimasi kohteet yhdessä näkymässä.</p>
+            </div>
+            <div className="ui-meta">{houses.length} kpl</div>
           </div>
-        ) : (
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {houses.map((house) => (
-              <HouseCard key={house.id} house={house} />
-            ))}
-          </div>
-        )}
-      </section>
 
-      <section className="grid gap-6 xl:grid-cols-2">
-        <OverdueMaintenanceCard items={overdueMaintenance} />
-        <UpcomingMaintenanceCard items={upcomingMaintenance} />
-      </section>
+          {houses.length === 0 ? (
+            <Card>
+              <h3 style={{ marginTop: 0 }}>Ei taloja vielä</h3>
+              <p className="ui-meta">
+                Lisää ensimmäinen talo, niin saat huoltokirjan käyttöön.
+              </p>
+              <div className="ui-actions" style={{ marginTop: 16 }}>
+                <ButtonLink href="/houses/new" variant="primary">
+                  Lisää talo
+                </ButtonLink>
+              </div>
+            </Card>
+          ) : (
+            <div className="ui-grid cols-3">
+              {houses.map((house) => (
+                <HouseCard key={house.id} house={house} />
+              ))}
+            </div>
+          )}
+        </section>
 
-      <section>
-        <RecentDocumentsCard items={recentDocuments} />
-      </section>
-    </div>
+        <section className="ui-grid cols-2">
+          <OverdueMaintenanceCard items={overdueMaintenance} />
+          <UpcomingMaintenanceCard items={upcomingMaintenance} />
+        </section>
+
+        <section>
+          <RecentDocumentsCard items={recentDocuments} />
+        </section>
+      </div>
+    </Layout>
   );
 }

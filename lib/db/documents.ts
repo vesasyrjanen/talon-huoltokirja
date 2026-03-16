@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { DOCUMENTS_BUCKET } from "@/lib/config/storage";
 
 export async function getHouseDocuments(houseId: string) {
   const supabase = await createClient();
@@ -61,7 +62,7 @@ export async function getSignedDocumentUrl(
 ) {
   const supabase = await createClient();
 
-  const bucket = maybePath ? bucketOrPath : "house-documents";
+  const bucket = maybePath ? bucketOrPath : DOCUMENTS_BUCKET;
   const storagePath = maybePath ?? bucketOrPath;
 
   const { data, error } = await supabase.storage

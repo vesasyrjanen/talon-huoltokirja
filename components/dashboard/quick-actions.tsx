@@ -1,25 +1,21 @@
-import Link from "next/link";
+import { Card } from "@/components/ui/card";
+import { ButtonLink } from "@/components/ui/button-link";
 
 export function QuickActions() {
   return (
-    <div className="rounded-2xl border bg-white p-5 shadow-sm">
-      <h2 className="text-lg font-semibold">Pikatoiminnot</h2>
+    <Card>
+      <h2 className="section-title" style={{ fontSize: 20 }}>Pikatoiminnot</h2>
+      <p className="section-lead">Nopeat siirtymät yleisimpiin toimintoihin.</p>
 
-      <div className="mt-4 flex flex-wrap gap-3">
-        <Link
-          href="/houses/new"
-          className="rounded-lg bg-black px-4 py-2 text-sm font-medium text-white"
-        >
+      <div className="ui-actions" style={{ marginTop: 16 }}>
+        <ButtonLink href="/houses/new" variant="primary">
           Lisää talo
-        </Link>
+        </ButtonLink>
 
-        <Link
-          href="/dashboard"
-          className="rounded-lg border px-4 py-2 text-sm font-medium"
-        >
+        <ButtonLink href="/dashboard">
           Päivitä näkymä
-        </Link>
+        </ButtonLink>
       </div>
-    </div>
+    </Card>
   );
 }
