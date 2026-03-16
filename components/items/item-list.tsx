@@ -18,9 +18,9 @@ export function ItemList({
 }) {
   if (items.length === 0) {
     return (
-      <div className="rounded-2xl border bg-white p-6 shadow-sm">
-        <h3 className="text-lg font-medium">Ei irtaimistoa vielä</h3>
-        <p className="mt-2 text-sm text-neutral-600">
+      <div className="ui-card">
+        <h3 style={{ marginTop: 0 }}>Ei irtaimistoa vielä</h3>
+        <p className="ui-meta">
           Lisää ensimmäinen laite, työkalu tai muu irtaimisto.
         </p>
       </div>
@@ -28,24 +28,24 @@ export function ItemList({
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+    <div className="ui-grid cols-3">
       {items.map((item) => (
         <Link
           key={item.id}
           href={`/houses/${houseId}/items/${item.id}`}
-          className="block rounded-2xl border bg-white p-5 shadow-sm hover:shadow-md"
+          className="ui-link-card"
         >
-          <h3 className="text-lg font-semibold">{item.name}</h3>
+          <h3 style={{ margin: 0, fontSize: 20 }}>{item.name}</h3>
           {item.category ? (
-            <p className="mt-2 text-sm text-neutral-600">{item.category}</p>
+            <p className="ui-meta" style={{ marginTop: 10 }}>{item.category}</p>
           ) : null}
           {(item.brand || item.model) ? (
-            <p className="mt-1 text-sm text-neutral-500">
+            <p className="ui-meta" style={{ marginTop: 6 }}>
               {[item.brand, item.model].filter(Boolean).join(" / ")}
             </p>
           ) : null}
           {item.location ? (
-            <p className="mt-1 text-sm text-neutral-500">
+            <p className="ui-meta" style={{ marginTop: 6 }}>
               Sijainti: {item.location}
             </p>
           ) : null}

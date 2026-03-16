@@ -4,6 +4,8 @@ import { getHouseDocuments, getSignedDocumentUrl } from '@/lib/db/documents'
 import { uploadHouseDocumentAction } from '@/actions/documents'
 import { DocumentUploadForm } from '@/components/documents/document-upload-form'
 import { DocumentList } from '@/components/documents/document-list'
+import { Layout } from '@/components/layout/layout'
+import { getHouseById } from '@/lib/db/systems'
 
 type PageProps = {
   params: Promise<{ houseId: string }>
@@ -13,7 +15,11 @@ export default async function HouseDocumentsPage({ params }: PageProps) {
   const { houseId } = await params
   await requireHouseMember(houseId)
 
-  const items = await getHouseDocuments(houseId)
+  const [house, items] = await Promise.all([
+    getHouseById(houseId),
+    getHouseDocuments(houseId),
+  ])
+
   const signedEntries = await Promise.all(
     items.map(async (item) => [
       item.id,
@@ -25,15 +31,20 @@ export default async function HouseDocumentsPage({ params }: PageProps) {
   const action = uploadHouseDocumentAction.bind(null, houseId, null)
 
   return (
-    <main style={{ maxWidth: 860, margin: '60px auto', padding: '0 16px' }}>
-      <p><Link href={`/houses/${houseId}`}>← Takaisin taloon</Link></p>
-      <h1>Dokumentit</h1>
-      <p style={{ color: '#555' }}>
-        Lataa taloon liittyvät käyttöohjeet, piirustukset, raportit ja valokuvat.
-      </p>
+    <Layout>
+      <div className="page-stack">
+        <p style={{ margin: 0 }}>
+          <Link href={`/houses/${houseId}`} className="ui-back-link">← Takaisin taloon</Link>
+        </p>
 
-      <DocumentUploadForm action={action} />
-      <DocumentList houseId={houseId} items={items} signedUrls={signedUrls} />
-    </main>
+        <section>
+          <h1 className="page-title">Talon dokumentit</h1>
+          <p className="page-lead">{house?.name}</p>
+        </section>
+
+        <DocumentUploadForm action={action} />
+        <DocumentList houseId={houseId} items={items} signedUrls={signedUrls} />
+      </div>
+    </Layout>
   )
 }

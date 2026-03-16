@@ -5,6 +5,7 @@ import { getItemById } from "@/lib/db/items";
 import { getItemDocuments } from "@/lib/db/documents";
 import { DocumentUploadForm } from "@/components/documents/document-upload-form";
 import { DocumentList } from "@/components/documents/document-list";
+import { Layout } from "@/components/layout/layout";
 
 export default async function ItemDocumentsPage({
   params,
@@ -25,20 +26,21 @@ export default async function ItemDocumentsPage({
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <p className="mb-3">
-          <Link href={`/houses/${houseId}/items/${itemId}`}>← Takaisin irtaimistoon</Link>
+    <Layout>
+      <div className="page-stack">
+        <p style={{ margin: 0 }}>
+          <Link href={`/houses/${houseId}/items/${itemId}`} className="ui-back-link">← Takaisin irtaimistoon</Link>
         </p>
-        <h1 className="text-3xl font-semibold">Irtaimiston dokumentit</h1>
-        <p className="mt-2 text-neutral-600">
-          {item.name}
-        </p>
+
+        <section>
+          <h1 className="page-title">Irtaimiston dokumentit</h1>
+          <p className="page-lead">{item.name}</p>
+        </section>
+
+        <DocumentUploadForm houseId={houseId} itemId={itemId} />
+
+        <DocumentList documents={documents} />
       </div>
-
-      <DocumentUploadForm houseId={houseId} itemId={itemId} />
-
-      <DocumentList documents={documents} />
-    </div>
+    </Layout>
   );
 }

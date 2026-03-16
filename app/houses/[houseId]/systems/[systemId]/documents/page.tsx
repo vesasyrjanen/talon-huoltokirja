@@ -4,6 +4,7 @@ import { getSystemDocuments, getSignedDocumentUrl } from '@/lib/db/documents'
 import { uploadSystemDocumentAction } from '@/actions/documents'
 import { DocumentUploadForm } from '@/components/documents/document-upload-form'
 import { DocumentList } from '@/components/documents/document-list'
+import { Layout } from '@/components/layout/layout'
 
 type PageProps = {
   params: Promise<{ houseId: string; systemId: string }>
@@ -25,15 +26,22 @@ export default async function SystemDocumentsPage({ params }: PageProps) {
   const action = uploadSystemDocumentAction.bind(null, houseId, systemId)
 
   return (
-    <main style={{ maxWidth: 860, margin: '60px auto', padding: '0 16px' }}>
-      <p><Link href={`/houses/${houseId}/systems/${systemId}`}>← Takaisin järjestelmään</Link></p>
-      <h1>Järjestelmän dokumentit</h1>
-      <p style={{ color: '#555' }}>
-        Lataa tähän järjestelmään liittyvät käyttöohjeet, raportit, kuvat ja muut dokumentit.
-      </p>
+    <Layout>
+      <div className="page-stack">
+        <p style={{ margin: 0 }}>
+          <Link href={`/houses/${houseId}/systems/${systemId}`} className="ui-back-link">← Takaisin järjestelmään</Link>
+        </p>
 
-      <DocumentUploadForm action={action} />
-      <DocumentList houseId={houseId} items={items} signedUrls={signedUrls} />
-    </main>
+        <section>
+          <h1 className="page-title">Järjestelmän dokumentit</h1>
+          <p className="page-lead">
+            Lataa tähän järjestelmään liittyvät käyttöohjeet, raportit, kuvat ja muut dokumentit.
+          </p>
+        </section>
+
+        <DocumentUploadForm action={action} />
+        <DocumentList houseId={houseId} items={items} signedUrls={signedUrls} />
+      </div>
+    </Layout>
   )
 }
