@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo
+echo "==> Pre-push: build + smoke verify"
+HOUSE_ID=${HOUSE_ID:-""} \
+SYSTEM_ID=${SYSTEM_ID:-""} \
+ITEM_ID=${ITEM_ID:-""} \
+npm run verify
