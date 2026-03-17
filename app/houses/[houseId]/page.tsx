@@ -1,9 +1,12 @@
 import Link from 'next/link'
 import { requireHouseMember } from '@/lib/auth/require-house-member'
 import { getHouseById, getHouseSystems } from '@/lib/db/systems'
+import { getHouseOverview } from '@/lib/db/house-overview'
 import { SystemList } from '@/components/systems/system-list'
 import { Layout } from '@/components/layout/layout'
 import { Card } from '@/components/ui/card'
+import { StatCard } from '@/components/overview/stat-card'
+import { RecentDocumentsOverview } from '@/components/overview/recent-documents-overview'
 
 type PageProps = {
   params: Promise<{ houseId: string }>
@@ -14,8 +17,11 @@ export default async function HousePage({ params }: PageProps) {
 
   await requireHouseMember(houseId)
 
-  const house = await getHouseById(houseId)
-  const systems = await getHouseSystems(houseId)
+  const [house, systems, overview] = await Promise.all([
+    getHouseById(houseId),
+    getHouseSystems(houseId),
+    getHouseOverview(houseId),
+  ])
 
   return (
     <Layout>
@@ -34,6 +40,42 @@ export default async function HousePage({ params }: PageProps) {
           <Link href={`/houses/${houseId}/items`}>Irtaimisto</Link>
           <Link href={`/houses/${houseId}/documents`}>Dokumentit</Link>
         </nav>
+
+        <section className="page-stack">
+          <div>
+            <h2 className="section-title">Yhteenveto</h2>
+            <p className="section-lead">Tärkeimmät tiedot yhdellä silmäyksellä.</p>
+          </div>
+
+          <div className="ui-grid cols-3">
+            <StatCard label="Järjestelmiä" value={overview.systemsCount} />
+            <StatCard label="Irtaimistoa" value={overview.itemsCount} />
+            <StatCard label="Dokumentteja" value={overview.documentsCount} />
+            <StatCard label="Myöhässä olevat huollot" value={overview.overdueCount} accent={overview.overdueCount > 0 ? "danger" : "default"} />
+            <StatCard label="Seuraavat 30 päivän huollot" value={overview.upcomingCount} />
+          </div>
+        </section>
+
+        <section className="ui-grid cols-2">
+          <RecentDocumentsOverview houseId={houseId} items={overview.recentDocuments} />
+
+          <Card>
+            <h2 className="section-title" style={{ fontSize: 20 }}>Nopeat siirtymät</h2>
+            <p className="section-lead">Yleisimmät toiminnot tälle talolle.</p>
+
+            <div className="ui-actions" style={{ marginTop: 16 }}>
+              <Link href={`/houses/${houseId}/systems/new`} className="ui-button-link primary">
+                Lisää järjestelmä
+              </Link>
+              <Link href={`/houses/${houseId}/items/new`} className="ui-button-link subtle">
+                Lisää irtaimisto
+              </Link>
+              <Link href={`/houses/${houseId}/documents`} className="ui-button-link subtle">
+                Avaa dokumentit
+              </Link>
+            </div>
+          </Card>
+        </section>
 
         <section className="page-stack">
           <div>
