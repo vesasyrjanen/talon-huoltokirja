@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { ReactNode } from "react";
+import { FlashToastServer } from "@/components/toast/flash-toast-server";
 
 export const metadata = {
   title: "Talon huoltokirja",
@@ -13,7 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fi">
-      <body>{children}</body>
+      <body>
+        <FlashToastServer />
+        {children}
+      </body>
     </html>
   );
 }
