@@ -33,7 +33,7 @@ export default async function HousePage({ params }: PageProps) {
 
         <section>
           <h1 className="page-title">{house?.name}</h1>
-          <p className="page-lead">Rakennusn yhteenveto ja pääsy kaikkiin tietoihin.</p>
+          <p className="page-lead">Rakennuksen yhteenveto ja pääsy kaikkiin tietoihin.</p>
         </section>
 
         <nav className="ui-pill-nav">
@@ -89,7 +89,7 @@ export default async function HousePage({ params }: PageProps) {
           <div>
             <h2 className="section-title">Järjestelmät</h2>
             <p className="section-lead">
-              Rakennusn tekniset järjestelmät ja niiden huoltohistoria.
+              Rakennuksen tekniset järjestelmät ja niiden huoltohistoria.
             </p>
           </div>
 

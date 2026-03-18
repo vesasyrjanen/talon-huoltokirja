@@ -38,7 +38,7 @@ export default async function HouseDocumentsPage({ params }: PageProps) {
         </p>
 
         <section>
-          <h1 className="page-title">Rakennusn dokumentit</h1>
+          <h1 className="page-title">Rakennuksen dokumentit</h1>
           <p className="page-lead">{house?.name}</p>
         </section>
 

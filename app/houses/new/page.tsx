@@ -15,7 +15,7 @@ export default function NewHousePage() {
 
       <form action={formAction} style={{ marginTop: 24, display: 'grid', gap: 16 }}>
         <label>
-          <div>Rakennusn nimi</div>
+          <div>Rakennuksen nimi</div>
           <input name="name" required style={inputStyle} />
         </label>
 
