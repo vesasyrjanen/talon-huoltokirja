@@ -2,12 +2,12 @@ import Link from 'next/link'
 import { requireHouseMember } from '@/lib/auth/require-house-member'
 import { getHouseById, getHouseSystems } from '@/lib/db/systems'
 import { getHouseOverview } from '@/lib/db/house-overview'
-import { deleteHouseAction } from '@/actions/houses-delete'
 import { SystemList } from '@/components/systems/system-list'
 import { Layout } from '@/components/layout/layout'
 import { Card } from '@/components/ui/card'
 import { StatCard } from '@/components/overview/stat-card'
 import { RecentDocumentsOverview } from '@/components/overview/recent-documents-overview'
+import { DeleteHouseButton } from '@/components/houses/delete-house-button'
 
 type PageProps = {
   params: Promise<{ houseId: string }>
@@ -102,25 +102,7 @@ export default async function HousePage({ params }: PageProps) {
               Lisää uusi järjestelmä
             </Link>
 
-            <form
-              action={async () => {
-                "use server"
-                await deleteHouseAction(houseId)
-              }}
-            >
-              <button
-                type="submit"
-                className="ui-button-link"
-                style={{
-                  background: "#ef4444",
-                  color: "white",
-                  borderColor: "#ef4444",
-                  cursor: "pointer",
-                }}
-              >
-                Poista talo
-              </button>
-            </form>
+            <DeleteHouseButton houseId={houseId} />
           </div>
         </section>
       </div>
