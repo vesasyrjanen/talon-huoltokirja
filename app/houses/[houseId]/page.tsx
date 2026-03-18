@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { requireHouseMember } from '@/lib/auth/require-house-member'
 import { getHouseById, getHouseSystems } from '@/lib/db/systems'
 import { getHouseOverview } from '@/lib/db/house-overview'
+import { deleteHouseAction } from '@/actions/houses-delete'
 import { SystemList } from '@/components/systems/system-list'
 import { Layout } from '@/components/layout/layout'
 import { Card } from '@/components/ui/card'
@@ -51,8 +52,15 @@ export default async function HousePage({ params }: PageProps) {
             <StatCard label="Järjestelmiä" value={overview.systemsCount} />
             <StatCard label="Irtaimistoa" value={overview.itemsCount} />
             <StatCard label="Dokumentteja" value={overview.documentsCount} />
-            <StatCard label="Myöhässä olevat huollot" value={overview.overdueCount} accent={overview.overdueCount > 0 ? "danger" : "default"} />
-            <StatCard label="Seuraavat 30 päivän huollot" value={overview.upcomingCount} />
+            <StatCard
+              label="Myöhässä olevat huollot"
+              value={overview.overdueCount}
+              accent={overview.overdueCount > 0 ? "danger" : "default"}
+            />
+            <StatCard
+              label="Seuraavat 30 päivän huollot"
+              value={overview.upcomingCount}
+            />
           </div>
         </section>
 
@@ -89,10 +97,30 @@ export default async function HousePage({ params }: PageProps) {
             <SystemList houseId={houseId} items={systems} />
           </Card>
 
-          <div>
+          <div className="ui-actions">
             <Link href={`/houses/${houseId}/systems/new`} className="ui-button-link primary">
               Lisää uusi järjestelmä
             </Link>
+
+            <form
+              action={async () => {
+                "use server"
+                await deleteHouseAction(houseId)
+              }}
+            >
+              <button
+                type="submit"
+                className="ui-button-link"
+                style={{
+                  background: "#ef4444",
+                  color: "white",
+                  borderColor: "#ef4444",
+                  cursor: "pointer",
+                }}
+              >
+                Poista talo
+              </button>
+            </form>
           </div>
         </section>
       </div>
