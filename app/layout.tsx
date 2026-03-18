@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { FlashToastServer } from "@/components/toast/flash-toast-server";
 
 export const metadata = {
-  title: "Talon huoltokirja",
+  title: "Rakennusn huoltokirja",
   description: "Huoltokirja, dokumentit ja irtaimisto",
 };
 

@@ -28,12 +28,12 @@ export default async function HousePage({ params }: PageProps) {
     <Layout>
       <div className="page-stack">
         <p style={{ margin: 0 }}>
-          <Link href="/dashboard" className="ui-back-link">← Takaisin dashboardiin</Link>
+          <Link href="/etusivu" className="ui-back-link">← Takaisin etusivuiin</Link>
         </p>
 
         <section>
           <h1 className="page-title">{house?.name}</h1>
-          <p className="page-lead">Talon yhteenveto ja pääsy kaikkiin tietoihin.</p>
+          <p className="page-lead">Rakennusn yhteenveto ja pääsy kaikkiin tietoihin.</p>
         </section>
 
         <nav className="ui-pill-nav">
@@ -69,7 +69,7 @@ export default async function HousePage({ params }: PageProps) {
 
           <Card>
             <h2 className="section-title" style={{ fontSize: 20 }}>Nopeat siirtymät</h2>
-            <p className="section-lead">Yleisimmät toiminnot tälle talolle.</p>
+            <p className="section-lead">Yleisimmät toiminnot tälle rakennuslle.</p>
 
             <div className="ui-actions" style={{ marginTop: 16 }}>
               <Link href={`/houses/${houseId}/systems/new`} className="ui-button-link primary">
@@ -89,7 +89,7 @@ export default async function HousePage({ params }: PageProps) {
           <div>
             <h2 className="section-title">Järjestelmät</h2>
             <p className="section-lead">
-              Talon tekniset järjestelmät ja niiden huoltohistoria.
+              Rakennusn tekniset järjestelmät ja niiden huoltohistoria.
             </p>
           </div>
 

@@ -6,13 +6,13 @@ export function Layout({ children }: { children: ReactNode }) {
     <div className="app-shell">
       <header className="app-header">
         <div className="app-header-inner">
-          <Link href="/dashboard" className="app-brand">
-            Talon huoltokirja
+          <Link href="/etusivu" className="app-brand">
+            Rakennusn huoltokirja
           </Link>
 
           <nav className="app-nav">
-            <Link href="/dashboard">Dashboard</Link>
-            <Link href="/houses/new">Uusi talo</Link>
+            <Link href="/etusivu">Etusivu</Link>
+            <Link href="/houses/new">Uusi rakennus</Link>
           </nav>
         </div>
       </header>

@@ -9,7 +9,7 @@ export function HouseCard({
     <Link href={`/houses/${house.id}`} className="ui-link-card">
       <h3 style={{ margin: 0, fontSize: 20 }}>{house.name}</h3>
       <div className="ui-meta" style={{ marginTop: 12 }}>
-        Avaa talo →
+        Avaa rakennus →
       </div>
     </Link>
   );

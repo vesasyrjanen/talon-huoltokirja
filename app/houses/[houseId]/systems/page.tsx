@@ -22,7 +22,7 @@ export default async function SystemsPage({ params }: PageProps) {
     <Layout>
       <div className="page-stack">
         <p style={{ margin: 0 }}>
-          <Link href={`/houses/${houseId}`} className="ui-back-link">← Takaisin taloon</Link>
+          <Link href={`/houses/${houseId}`} className="ui-back-link">← Takaisin rakennuson</Link>
         </p>
 
         <section>
@@ -35,7 +35,7 @@ export default async function SystemsPage({ params }: PageProps) {
             Lisää järjestelmä
           </Link>
           <Link href={`/houses/${houseId}`} className="ui-button-link subtle">
-            Takaisin taloon
+            Takaisin rakennuson
           </Link>
         </div>
 

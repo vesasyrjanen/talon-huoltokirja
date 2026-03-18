@@ -19,7 +19,7 @@ export function RecentDocumentsOverview({
   return (
     <Card>
       <h2 className="section-title" style={{ fontSize: 20 }}>Uusimmat dokumentit</h2>
-      <p className="section-lead">Viimeksi lisätyt tiedostot tässä talossa.</p>
+      <p className="section-lead">Viimeksi lisätyt tiedostot tässä rakennusssa.</p>
 
       {items.length === 0 ? (
         <p className="ui-meta" style={{ marginTop: 16 }}>

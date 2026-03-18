@@ -34,11 +34,11 @@ export default async function HouseDocumentsPage({ params }: PageProps) {
     <Layout>
       <div className="page-stack">
         <p style={{ margin: 0 }}>
-          <Link href={`/houses/${houseId}`} className="ui-back-link">← Takaisin taloon</Link>
+          <Link href={`/houses/${houseId}`} className="ui-back-link">← Takaisin rakennuson</Link>
         </p>
 
         <section>
-          <h1 className="page-title">Talon dokumentit</h1>
+          <h1 className="page-title">Rakennusn dokumentit</h1>
           <p className="page-lead">{house?.name}</p>
         </section>
 

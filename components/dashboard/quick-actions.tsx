@@ -9,10 +9,10 @@ export function QuickActions() {
 
       <div className="ui-actions" style={{ marginTop: 16 }}>
         <ButtonLink href="/houses/new" variant="primary">
-          Lisää talo
+          Lisää rakennus
         </ButtonLink>
 
-        <ButtonLink href="/dashboard">
+        <ButtonLink href="/etusivu">
           Päivitä näkymä
         </ButtonLink>
       </div>

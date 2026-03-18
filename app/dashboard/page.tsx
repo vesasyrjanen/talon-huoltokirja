@@ -12,7 +12,7 @@ import { OverdueMaintenanceCard } from "@/components/dashboard/overdue-maintenan
 import { UpcomingMaintenanceCard } from "@/components/dashboard/upcoming-maintenance-card";
 import { RecentDocumentsCard } from "@/components/dashboard/recent-documents-card";
 
-export default async function DashboardPage() {
+export default async function EtusivuPage() {
   await requireUser();
   await syncUserProfile();
 
@@ -23,9 +23,9 @@ export default async function DashboardPage() {
     <Layout>
       <div className="page-stack">
         <section>
-          <h1 className="page-title">Dashboard</h1>
+          <h1 className="page-title">Etusivu</h1>
           <p className="page-lead">
-            Yhteenveto taloista, huolloista ja dokumenteista.
+            Yhteenveto rakennuksista, huolloista ja dokumenteista.
           </p>
         </section>
 
@@ -34,7 +34,7 @@ export default async function DashboardPage() {
         <section className="page-stack">
           <div style={{ display: "flex", justifyContent: "space-between", gap: 16, alignItems: "end", flexWrap: "wrap" }}>
             <div>
-              <h2 className="section-title">Talot</h2>
+              <h2 className="section-title">Rakennukset</h2>
               <p className="section-lead">Kaikki hallinnoimasi kohteet yhdessä näkymässä.</p>
             </div>
             <div className="ui-meta">{houses.length} kpl</div>
@@ -42,13 +42,13 @@ export default async function DashboardPage() {
 
           {houses.length === 0 ? (
             <Card>
-              <h3 style={{ marginTop: 0 }}>Ei taloja vielä</h3>
+              <h3 style={{ marginTop: 0 }}>Ei rakennuksia vielä</h3>
               <p className="ui-meta">
-                Lisää ensimmäinen talo, niin saat huoltokirjan käyttöön.
+                Lisää ensimmäinen rakennus, niin saat huoltokirjan käyttöön.
               </p>
               <div className="ui-actions" style={{ marginTop: 16 }}>
                 <ButtonLink href="/houses/new" variant="primary">
-                  Lisää talo
+                  Lisää rakennus
                 </ButtonLink>
               </div>
             </Card>

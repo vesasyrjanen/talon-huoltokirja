@@ -10,12 +10,12 @@ export default function NewHousePage() {
 
   return (
     <main style={{ maxWidth: 720, margin: '60px auto', padding: '0 16px' }}>
-      <h1>Luo uusi talo</h1>
-      <p style={{ color: '#555' }}>Anna talon perustiedot. Tarkempia tietoja voi täydentää myöhemmin.</p>
+      <h1>Luo uusi rakennus</h1>
+      <p style={{ color: '#555' }}>Anna rakennusn perustiedot. Tarkempia tietoja voi täydentää myöhemmin.</p>
 
       <form action={formAction} style={{ marginTop: 24, display: 'grid', gap: 16 }}>
         <label>
-          <div>Talon nimi</div>
+          <div>Rakennusn nimi</div>
           <input name="name" required style={inputStyle} />
         </label>
 
@@ -41,7 +41,7 @@ export default function NewHousePage() {
 
         <label>
           <div>Rakennustyyppi</div>
-          <input name="buildingType" placeholder="esim. omakotitalo" style={inputStyle} />
+          <input name="buildingType" placeholder="esim. omakotirakennus" style={inputStyle} />
         </label>
 
         <label>
@@ -64,7 +64,7 @@ export default function NewHousePage() {
             cursor: 'pointer',
           }}
         >
-          {pending ? 'Tallennetaan...' : 'Luo talo'}
+          {pending ? 'Tallennetaan...' : 'Luo rakennus'}
         </button>
       </form>
     </main>
