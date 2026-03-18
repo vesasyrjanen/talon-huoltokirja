@@ -57,7 +57,7 @@ export async function createItem(formData: FormData) {
 
   revalidatePath(`/houses/${input.houseId}`);
   revalidatePath(`/houses/${input.houseId}/items`);
-  redirect(`/houses/${input.houseId}/items`);
+  redirect(`/houses/${input.houseId}/items?created=1`);
 }
 
 export async function updateItem(formData: FormData) {

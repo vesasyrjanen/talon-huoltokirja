@@ -4,13 +4,17 @@ import { getHouseItems } from "@/lib/db/items";
 import { ItemList } from "@/components/items/item-list";
 import { Layout } from "@/components/layout/layout";
 import { getHouseById } from "@/lib/db/systems";
+import { Card } from "@/components/ui/card";
 
 export default async function HouseItemsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ houseId: string }>;
+  searchParams: Promise<{ created?: string }>;
 }) {
   const { houseId } = await params;
+  const { created } = await searchParams;
 
   await requireHouseMember(houseId);
 
@@ -32,6 +36,15 @@ export default async function HouseItemsPage({
             {house?.name}
           </p>
         </section>
+
+        {created === "1" ? (
+          <Card compact>
+            <div style={{ fontWeight: 700 }}>Irtaimisto tallennettu</div>
+            <div className="ui-meta" style={{ marginTop: 6 }}>
+              Uusi kohde näkyy nyt listan kärjessä.
+            </div>
+          </Card>
+        ) : null}
 
         <div className="ui-actions">
           <Link
