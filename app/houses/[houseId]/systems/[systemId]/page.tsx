@@ -44,11 +44,11 @@ export default async function SystemDetailPage({ params }: PageProps) {
         </section>
 
         <div className="ui-actions">
+          <Link href={`/qr/system/${systemId}`} className="ui-button-link primary">
+            Avaa QR-koodi
+          </Link>
           <Link href={`/houses/${houseId}/systems/${systemId}/documents`} className="ui-button-link subtle">
             Avaa dokumentit
-          </Link>
-          <Link href={`/qr/system/${systemId}`} className="ui-button-link subtle">
-            Avaa QR-koodi
           </Link>
         </div>
 
