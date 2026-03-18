@@ -7,7 +7,7 @@ export default function HomePage() {
       <p>Tämä on digitaalinen rakennusn käyttö- ja huoltokirja.</p>
       <ul>
         <li><Link href="/login">Kirjaudu sisään</Link></li>
-        <li><Link href="/etusivu">Avaa etusivu</Link></li>
+        <li><Link href="/dashboard">Avaa etusivu</Link></li>
       </ul>
     </main>
   )

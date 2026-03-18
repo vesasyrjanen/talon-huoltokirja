@@ -28,7 +28,7 @@ export default async function HousePage({ params }: PageProps) {
     <Layout>
       <div className="page-stack">
         <p style={{ margin: 0 }}>
-          <Link href="/etusivu" className="ui-back-link">← Takaisin etusivuiin</Link>
+          <Link href="/dashboard" className="ui-back-link">← Takaisin etusivulle</Link>
         </p>
 
         <section>

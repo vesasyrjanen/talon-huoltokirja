@@ -12,7 +12,7 @@ export function QuickActions() {
           Lisää rakennus
         </ButtonLink>
 
-        <ButtonLink href="/etusivu">
+        <ButtonLink href="/dashboard">
           Päivitä näkymä
         </ButtonLink>
       </div>
