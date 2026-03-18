@@ -1,80 +1,48 @@
-'use client'
+import Link from 'next/link'
+import { createHouseAction } from '@/actions/houses'
+import { Layout } from '@/components/layout/layout'
+import { requireUser } from '@/lib/auth/require-user'
 
-import { useActionState } from 'react'
-import { createHouseAction, type CreateHouseState } from '@/actions/houses'
+export default async function NewHousePage() {
+  await requireUser()
 
-const initialState: CreateHouseState = {}
-
-export default function NewHousePage() {
-  const [state, formAction, pending] = useActionState(createHouseAction, initialState)
+  async function action(formData: FormData) {
+    "use server"
+    await createHouseAction({}, formData)
+  }
 
   return (
-    <main style={{ maxWidth: 720, margin: '60px auto', padding: '0 16px' }}>
-      <h1>Luo uusi rakennus</h1>
-      <p style={{ color: '#555' }}>Anna rakennuksen perustiedot. Tarkempia tietoja voi täydentää myöhemmin.</p>
+    <Layout>
+      <div className="page-stack">
+        <p style={{ margin: 0 }}>
+          <Link href="/dashboard" className="ui-back-link">← Takaisin etusivulle</Link>
+        </p>
 
-      <form action={formAction} style={{ marginTop: 24, display: 'grid', gap: 16 }}>
-        <label>
-          <div>Rakennuksen nimi</div>
-          <input name="name" required style={inputStyle} />
-        </label>
+        <section>
+          <h1 className="page-title">Uusi rakennus</h1>
+          <p className="page-lead">
+            Lisää uusi rakennus huoltokirjaan.
+          </p>
+        </section>
 
-        <label>
-          <div>Osoite</div>
-          <input name="addressLine1" style={inputStyle} />
-        </label>
+        <form action={action} className="ui-card" style={{ display: 'grid', gap: 16 }}>
+          <div style={{ display: 'grid', gap: 8 }}>
+            <label style={{ fontWeight: 600 }}>Rakennuksen nimi</label>
+            <input
+              name="name"
+              required
+              className="w-full rounded-lg border px-3 py-2"
+              placeholder="esim. Päärakennus, Navetta, Autotalli"
+            />
+          </div>
 
-        <label>
-          <div>Postinumero</div>
-          <input name="postalCode" style={inputStyle} />
-        </label>
-
-        <label>
-          <div>Kaupunki</div>
-          <input name="city" style={inputStyle} />
-        </label>
-
-        <label>
-          <div>Rakennusvuosi</div>
-          <input name="buildingYear" type="number" style={inputStyle} />
-        </label>
-
-        <label>
-          <div>Rakennustyyppi</div>
-          <input name="buildingType" placeholder="esim. omakotirakennus" style={inputStyle} />
-        </label>
-
-        <label>
-          <div>Pinta-ala (m²)</div>
-          <input name="areaM2" type="number" step="0.1" style={inputStyle} />
-        </label>
-
-        {state.error ? <p style={{ color: 'crimson' }}>{state.error}</p> : null}
-
-        <button
-          type="submit"
-          disabled={pending}
-          style={{
-            width: 'fit-content',
-            padding: '12px 16px',
-            border: 'none',
-            borderRadius: 10,
-            background: '#0f172a',
-            color: 'white',
-            cursor: 'pointer',
-          }}
-        >
-          {pending ? 'Tallennetaan...' : 'Luo rakennus'}
-        </button>
-      </form>
-    </main>
+          <div className="ui-actions">
+            <button className="ui-button-link primary" style={{ cursor: 'pointer' }}>
+              Tallenna rakennus
+            </button>
+          </div>
+        </form>
+      </div>
+    </Layout>
   )
-}
-
-const inputStyle: React.CSSProperties = {
-  width: '100%',
-  padding: '12px',
-  marginTop: '6px',
-  border: '1px solid #ccc',
-  borderRadius: '8px',
 }
