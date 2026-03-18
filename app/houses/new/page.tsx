@@ -11,7 +11,7 @@ export default function NewHousePage() {
   return (
     <main style={{ maxWidth: 720, margin: '60px auto', padding: '0 16px' }}>
       <h1>Luo uusi rakennus</h1>
-      <p style={{ color: '#555' }}>Anna rakennusn perustiedot. Tarkempia tietoja voi täydentää myöhemmin.</p>
+      <p style={{ color: '#555' }}>Anna rakennuksen perustiedot. Tarkempia tietoja voi täydentää myöhemmin.</p>
 
       <form action={formAction} style={{ marginTop: 24, display: 'grid', gap: 16 }}>
         <label>

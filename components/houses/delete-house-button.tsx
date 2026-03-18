@@ -19,7 +19,7 @@ export function DeleteHouseButton({ houseId }: { houseId: string }) {
       disabled={isPending}
       onClick={() => {
         const ok = window.confirm(
-          "Haluatko varmasti poistaa tämän rakennusn? Kaikki siihen liittyvät järjestelmät, huollot, dokumentit ja irtaimisto poistuvat samalla."
+          "Haluatko varmasti poistaa tämän rakennuksen? Kaikki siihen liittyvät järjestelmät, huollot, dokumentit ja irtaimisto poistuvat samalla."
         );
 
         if (!ok) return;
